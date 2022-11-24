@@ -62,7 +62,7 @@ export default {
   },
   methods:{
     redirectInicio(){
-      this.$router.push('/inicio');
+      this.$router.push('/');
     },
     redirectHistorico(){
       this.$router.push('/historico');
