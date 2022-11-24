@@ -7,7 +7,9 @@
         no-gutters
       >
         <div>
-          <img src="" alt="">
+          <span class="texto-logo">
+            Tesis II
+          </span>
         </div>
       </v-row>
       <v-row
@@ -30,6 +32,22 @@
           class="my-2"
         > Histórico
         </v-btn>
+        <v-btn
+          color="white"
+          text
+          @click="redirectNosotros"
+          rounded
+          class="my-2"
+        > Nosotros
+        </v-btn>
+        <v-btn
+          color="white"
+          text
+          @click="redirectProductos"
+          rounded
+          class="my-2"
+        > Productos
+        </v-btn>
       </v-row>
     </v-footer>
 </template>
@@ -44,12 +62,16 @@ export default {
   },
   methods:{
     redirectInicio(){
-      console.log("changeButton");
-      return 0
+      this.$router.push('/inicio');
     },
     redirectHistorico(){
-      console.log("redirectHistorico  ");
-      return 0
+      this.$router.push('/historico');
+    },
+    redirectNosotros(){
+      this.$router.push('/nosotros');
+    },
+    redirectProductos(){
+      this.$router.push('/productos');
     }
   },
   data () {
@@ -68,5 +90,11 @@ export default {
 </script>
 
 <style>
+.texto-logo{
+  text-align: center;
+  margin-left: 30px;
+  font-size: 20px ;
+  color: #FFFFFF;
+}
 
 </style>
