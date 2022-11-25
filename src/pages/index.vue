@@ -10,7 +10,7 @@
     </v-col>
   </v-row> -->
   <div class="contenedor-principal">
-    <v-carousel>
+    <v-carousel >
       <v-carousel-item
         v-for="(item,i) in items"
         :key="i"
@@ -19,6 +19,36 @@
         transition="fade-transition"
       ></v-carousel-item>
     </v-carousel>
+    <div class="contenedor-subtitle">
+      PRODUCTOS MÁS BUSCADOS
+    </div>
+    <div>
+      <div>
+         <v-card
+          class="mx-auto"
+          max-width="344"
+          >
+          <v-card-text>
+            <div>Producto</div>
+            <p class="text-h4 text--primary">
+              Papas 1 kg
+            </p>
+            <p>Precio histórico</p>
+            <div class="text--primary">
+             grafico de historicos
+            </div>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              text
+              color="deep-purple accent-4"
+            >
+              Ir a producto
+            </v-btn>
+          </v-card-actions>
+          </v-card>
+      </div>
+    </div>
   </div>
   
 </template>
@@ -30,7 +60,7 @@ export default {
     return {
         items: [
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+            src: 'https://acceso.com.pe/wp-admin/images/jaime/fondo-prueba.png',
           },
           {
             src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
@@ -50,5 +80,11 @@ export default {
 .contenedor-principal{
   max-width: 100%  !important;
   margin: auto;
+  margin-bottom: 100px ;
+}
+.contenedor-subtitle{
+  color: #000000;
+  text-align: center;
+  padding: 30px 0px;
 }
 </style>
