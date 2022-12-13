@@ -1,12 +1,16 @@
 <template>
   <div>
-    productos {{productos}}
+    <producto :productos="productos"/>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import producto from '@/components/views/productos';
 export default {
+  components:{
+    producto,
+  },
   computed:{
     ...mapGetters('producto', ['productos']),
   },
@@ -15,7 +19,8 @@ export default {
     console.log("this.$store.", await this.$store.dispatch);
     let paylodad = {
         "nombreProducto": "papa",
-        "categoria": "abarrotes"
+        "categoria": "abarrotes",
+        "numeroDias": "40"
       }
     await this.$store.dispatch('producto/getProducto',paylodad);
   }
