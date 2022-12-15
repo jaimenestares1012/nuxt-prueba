@@ -1,9 +1,10 @@
 <template>
   <v-app dark>
+    
     <div>
       <footerInit/>
     </div>
-   
+    <LoadingGeneral :is-loading="isLoading" />
     <v-main>
       <Nuxt />
     </v-main>
@@ -12,10 +13,17 @@
 
 <script>
 import footerInit from '@/components/Footers/footer';
+import LoadingGeneral from '@/components/Loading/LoadingGeneral';
 export default {
   name: 'DefaultLayout',
   components:{
     footerInit,
+    LoadingGeneral
+  },
+  computed: {
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
   },
   data () {
     return {

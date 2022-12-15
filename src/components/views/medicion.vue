@@ -76,8 +76,10 @@ export default {
     },
     methods:{
       async redirect(item){
+        this.$showSpinner(true);
         const response  = await this.$store.dispatch('producto/getPoderAquisitivo', item);
         this.$router.push('/mediciones/detalles');
+        this.$showSpinner(false);
       }
     },
     computed:{

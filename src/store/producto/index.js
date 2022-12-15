@@ -3,6 +3,9 @@ import { apigetProducto, apigetPoderAquisitivo } from '@/api/productos';
 export const state = () => ({
   isLoading: false,
   isError: false,
+  title: null,
+  creador: null,
+  tienda: null,
   productos:[],
   poder: []
 });
@@ -19,6 +22,11 @@ export const mutations = {
   },
   SET_PODER(state, value){
     state.poder = value;
+  },
+  SET_PODER_ADIC(state, value){
+    state.title = value.title;
+    state.tienda = value.tienda;
+    state.creador = value.creador;
   }
 };
 
@@ -40,6 +48,7 @@ export const actions = {
       const responseApigetPoderAquisitivo = await apigetPoderAquisitivo(payload);
       if (responseApigetPoderAquisitivo.codRes=="00") {
         commit('SET_PODER', responseApigetPoderAquisitivo.data);
+        commit('SET_PODER_ADIC', responseApigetPoderAquisitivo);
         return responseApigetPoderAquisitivo
       }else{
         commit('SET_IS_ERROR', false);
@@ -52,4 +61,7 @@ export const actions = {
 export const getters = {
   productos: (state) => state.productos,
   poder: (state) => state.poder,
+  tienda: (state) => state.tienda,
+  title: (state) => state.title,
+  creador: (state) => state.creador,
 };
