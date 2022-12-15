@@ -35,6 +35,14 @@
         <v-btn
           color="white"
           text
+          @click="redirectMedicion"
+          rounded
+          class="my-2"
+        > Medicion
+        </v-btn>
+        <v-btn
+          color="white"
+          text
           @click="redirectNosotros"
           rounded
           class="my-2"
@@ -72,6 +80,9 @@ export default {
     },
     redirectProductos(){
       this.$router.push('/productos');
+    },
+    redirectMedicion(){
+      this.$router.push('/mediciones');
     }
   },
   data () {

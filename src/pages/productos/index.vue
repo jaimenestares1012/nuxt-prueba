@@ -15,8 +15,6 @@ export default {
     ...mapGetters('producto', ['productos']),
   },
   async mounted(){
-    console.log("awa");
-    console.log("this.$store.", await this.$store.dispatch);
     let paylodad = {
         "nombreProducto": "papa",
         "categoria": "abarrotes",
