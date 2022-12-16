@@ -11,7 +11,7 @@
           <v-btn
               color="primary"
               dark
-              @click="redirect()"
+              @click="redirectCrear()"
           >
               Crear Canasta
           </v-btn>
@@ -80,6 +80,9 @@ export default {
         const response  = await this.$store.dispatch('producto/getPoderAquisitivo', item);
         this.$router.push('/mediciones/detalles');
         this.$showSpinner(false);
+      },
+      redirectCrear(){
+        this.$router.push('/mediciones/crear');
       }
     },
     computed:{

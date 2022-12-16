@@ -58,7 +58,7 @@
                     <td>  <v-btn color="primary" dark @click="ira(value.url)" > Ir </v-btn> </td>
                 </tr>
             </table>
-            <div class="container-button">
+            <!-- <div class="container-button">
               <v-btn
                   color="primary"
                   dark
@@ -66,7 +66,7 @@
               >
                   Ver evolución
               </v-btn>
-            </div>
+            </div> -->
         </v-card>
      
     </div>

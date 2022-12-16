@@ -1,5 +1,6 @@
 
 import { apigetProducto, apigetPoderAquisitivo } from '@/api/productos';
+import { apigetCatalogos } from '@/api/catalogos';
 export const state = () => ({
   isLoading: false,
   isError: false,
@@ -7,10 +8,15 @@ export const state = () => ({
   creador: null,
   tienda: null,
   productos:[],
-  poder: []
+  poder: [],
+  catalogue: []
 });
 
 export const mutations = {
+  SET_CATALOGS(state, data) {
+    state.catalogue = [ ...state.catalogue, ...data ]
+    console.log("state.catalogue", state.catalogue);
+  },
   SET_ISLOADING(state, value) {
     state.isLoading = value;
   },
@@ -19,6 +25,9 @@ export const mutations = {
   },
   SET_PRODUCTOS(state, value){
     state.productos = value;
+  },
+  SET_CLEAR(state){
+    state.productos = [];
   },
   SET_PODER(state, value){
     state.poder = value;
@@ -31,6 +40,11 @@ export const mutations = {
 };
 
 export const actions = {
+    async getCatalogos({ commit }, payload) {
+      const responseApigetCatalogos = await apigetCatalogos(payload);
+      console.log("responseApigetCatalogos", responseApigetCatalogos);
+      commit('SET_CATALOGS', responseApigetCatalogos.data);
+    },
     async getProducto({ commit }, payload) {
       console.log("payload", payload);
       const responseApigetProducto = await apigetProducto(payload);
@@ -64,4 +78,5 @@ export const getters = {
   tienda: (state) => state.tienda,
   title: (state) => state.title,
   creador: (state) => state.creador,
+  catalogue: (state) => state.catalogue ? state.catalogue : []
 };
