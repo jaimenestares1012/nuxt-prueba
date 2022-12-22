@@ -19,13 +19,13 @@
     </div>
     
     <div class="contenedor-card-medicion">
-     
+      <!-- {{dataAdministrador.data}} -->
         <v-card
-          v-for="(item, key) in data"
+          v-for="(item, key) in dataAdministrador"
           :key="key"
         
           class="card-nativo-medicion" 
-        >
+        > 
             <v-img
             class="white--text align-end"
             height="200px"
@@ -40,7 +40,53 @@
             <v-card-text class="text--primary ">
             <div><b>Tienda: </b>{{item.tienda}}</div>
             <div><b> Creación: {{item.creador}}  </b></div>
-            <div><b>Categoría: </b>{{item.categoria}}</div>
+            </v-card-text>
+            <table style=" width: 95%; margin:auto; text-align: center">
+                <tr style="background: #488FEF; color: white">
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col"> Cantidad </th>
+                
+                </tr>
+                <tr v-for="(value, key) in item.productosList" :key="key"> 
+                    <td>{{ value.typeCategory  }}</td>
+                    <td>{{ value.prod }} </td>
+                    <td>{{ value.cantidad }} </td>
+                </tr>
+            </table>
+            <div class="container-button">
+              <v-btn
+                  color="primary"
+                  dark
+                  @click="redirect(item)"
+              >
+                  Ver evolución
+              </v-btn>
+            </div>
+        </v-card>
+    </div>
+     <div class="contenedor-card-medicion">
+      <!-- {{dataAdministrador.data}} -->
+        <v-card
+          v-for="(item, key) in dataUsuario"
+          :key="key"
+        
+          class="card-nativo-medicion" 
+        > 
+            <v-img
+            class="white--text align-end"
+            height="200px"
+            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+            >
+           
+            </v-img>
+            
+            <div class="titulo-medicion">
+               {{item.title}}
+            </div>
+            <v-card-text class="text--primary ">
+            <div><b>Tienda: </b>{{item.tienda}}</div>
+            <div><b> Creación: {{item.creador}}  </b></div>
             </v-card-text>
             <table style=" width: 95%; margin:auto; text-align: center">
                 <tr style="background: #488FEF; color: white">
@@ -70,6 +116,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     props: {
         poder: { type: Array, default: () => []  },
@@ -86,134 +133,35 @@ export default {
       }
     },
     computed:{
+      ...mapGetters('producto', [ 'catalogue']),
+
+      dataAdministrador(){
+        const array = this.catalogue.filter(item => item.creador == 'administrador' )
+        // console.log("array[0]", array[0].data);
+        return array[0] ?  array[0].data : []
+      },
+      dataUsuario(){
+        const array = this.catalogue.filter(item => item.creador == 'usuarioGenerico' )
+        // console.log("array[0]", array[0].data);
+        return array[0] ?  array[0].data : []
+      }
 
     },
     data(){
         return{
-            data :[
-              {
-                "nombreProducto": "555",
-                "categoria": "abarrotes",
-                "title": "Productos Clásicos",
-                "creador": "Administrador",
-                "tienda": "won",
-                "numeroDias": "13",
-                "productosList": [
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Arroz Extra Paisana Bolsa 1 kg",
-                    "cantidad": 10
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Tortillas de Maíz Queso Atrevido Doritos 210g",
-                    "cantidad": 2
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Galletas Danesas Castillos Famosos 340g",
-                    "cantidad": 4
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Pastina Codo Rayado Don Vittorio 500g",
-                    "cantidad": 3
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Fideo Spaghetti Nicolini 950g",
-                    "cantidad": 4
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Lenteja Costeño Bolsa 500 g",
-                    "cantidad": 6
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Garbanzos Costeño Bolsa 500 g",
-                    "cantidad": 2
-                  },
-                  {
-                    "typeCategory": "carnes-aves-y-pescados",
-                    "prod": "Pollo Entero sin Menudencia x kg",
-                    "cantidad": 6
-                  },
-                  {
-                    "typeCategory": "carnes-aves-y-pescados",
-                    "prod": "Carne Molida de Pavita San Fernando Bolsa 500 g",
-                    "cantidad": 2
-                  }
-                  ,{
-                    "typeCategory": "carnes-aves-y-pescados",
-                    "prod": "Nuggets de Pollo con Quinua Avinka Bolsa 300 g",
-                    "cantidad": 6
-                  }
-                ]
-              },
-              {
-                "nombreProducto": "555",
-                "categoria": "abarrotes",
-                "tienda": "won",
-                "title": "Productos dietéticos",
-                "creador": "Administrador",
-                "numeroDias": "13",
-                "productosList": [
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Arroz Extra Paisana Bolsa 1 kg",
-                    "cantidad": 10
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Tortillas de Maíz Queso Atrevido Doritos 210g",
-                    "cantidad": 2
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Galletas Danesas Castillos Famosos 340g",
-                    "cantidad": 4
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Pastina Codo Rayado Don Vittorio 500g",
-                    "cantidad": 3
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Fideo Spaghetti Nicolini 950g",
-                    "cantidad": 4
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Lenteja Costeño Bolsa 500 g",
-                    "cantidad": 6
-                  },
-                  {
-                    "typeCategory": "abarrotes",
-                    "prod": "Garbanzos Costeño Bolsa 500 g",
-                    "cantidad": 2
-                  },
-                  {
-                    "typeCategory": "carnes-aves-y-pescados",
-                    "prod": "Pollo Entero sin Menudencia x kg",
-                    "cantidad": 6
-                  },
-                  {
-                    "typeCategory": "carnes-aves-y-pescados",
-                    "prod": "Carne Molida de Pavita San Fernando Bolsa 500 g",
-                    "cantidad": 2
-                  }
-                  ,{
-                    "typeCategory": "carnes-aves-y-pescados",
-                    "prod": "Nuggets de Pollo con Quinua Avinka Bolsa 300 g",
-                    "cantidad": 6
-                  }
-                ]
-              }
-            ]
         }
-    }
+    },
+    async mounted(){
+      this.$store.commit('producto/SET_CLEAR');
+      this.$showSpinner(true);
+      let paylodad = {
+          "colecciones":["administrador", "usuarioGenerico"],
+          "categorias": "bolsaProductos",
+          "tipo": "2",
+        }
+      await this.$store.dispatch('producto/getCatalogos',paylodad);
+      this.$showSpinner(false);
+  },
   
 }
 </script>

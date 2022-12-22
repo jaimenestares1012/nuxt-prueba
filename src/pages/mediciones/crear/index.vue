@@ -260,7 +260,8 @@ export default {
       this.$showSpinner(true);
       let paylodad = {
           "colecciones":["won", "metro", "tottus", "tiendas"],
-          "categorias": "categorias"
+          "categorias": "categorias",
+          "tipo": "1"
         }
       await this.$store.dispatch('producto/getCatalogos',paylodad);
       this.$showSpinner(false);

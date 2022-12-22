@@ -38,8 +38,8 @@
                {{item.fecha}}
             </div>
             <v-card-text class="text--primary ">
-            <div><b>Precio total: {{item.montoTotal}} </b> </div>
-            <div><b>Número de productos : {{item.numeroProductos}}  </b></div>
+            <div style="font-size:17px">Precio total: <b> S/{{item.montoTotal}} </b> </div>
+            <div>Número de productos : <b> {{item.numeroProductos}}  </b></div>
             </v-card-text>
             <table style=" width: 95%; margin:auto; text-align: center">
                 <tr style="background: #488FEF; color: white">
@@ -125,6 +125,7 @@ export default {
 .card-nativo-detalles{
   width: 700px;
   margin: 10px;
+  padding-bottom: 20px;
 }
 .contenedor-detalles-button{
   margin: 0px auto;

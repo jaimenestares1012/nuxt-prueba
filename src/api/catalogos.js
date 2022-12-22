@@ -2,7 +2,7 @@ import axios from "axios";
 async function apigetCatalogos(data) {
   try {
     const response = await axios({
-      url: "http://18.234.81.160:8080/catalogos",
+      url: `http://18.234.81.160:8080/catalogos/${data.tipo}`,
       method: "POST",
       data
     });
