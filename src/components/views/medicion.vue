@@ -49,9 +49,9 @@
                 
                 </tr>
                 <tr v-for="(value, key) in item.productosList" :key="key"> 
-                    <td>{{ value.typeCategory  }}</td>
-                    <td>{{ value.prod }} </td>
-                    <td>{{ value.cantidad }} </td>
+                    <td style="padding:6px">{{ value.typeCategory  }}</td>
+                    <td style="padding:6px">{{ value.prod }} </td>
+                    <td style="padding:6px">{{ value.cantidad }} </td>
                 </tr>
             </table>
             <div class="container-button">
@@ -96,9 +96,9 @@
                 
                 </tr>
                 <tr v-for="(value, key) in item.productosList" :key="key"> 
-                    <td>{{ value.typeCategory  }}</td>
-                    <td>{{ value.prod }} </td>
-                    <td>{{ value.cantidad }} </td>
+                    <td style="padding:6px">{{ value.typeCategory  }}</td>
+                    <td style="padding:6px">{{ value.prod }} </td>
+                    <td style="padding:6px">{{ value.cantidad }} </td>
                 </tr>
             </table>
             <div class="container-button">
