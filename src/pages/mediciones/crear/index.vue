@@ -250,7 +250,14 @@ export default {
       if (this.bolsa.title) {
         this.tiendaSelect = this.bolsa.tiendaSelect
         this.categoriaFiltrada = []
-        this.categoriaFiltrada = this.catalogue.filter(item => item.idTienda == this.tiendaSelect )[0].categorias
+        console.log("this.catalogue.", this.catalogue);
+        console.log("this.catalogue.filter(item => item.idTienda == this.tiendaSelect )[0].", this.catalogue.filter(item => item.idTienda == this.tiendaSelect ));
+        try {
+          console.log("this.tiendaSelect", this.tiendaSelect);
+          this.categoriaFiltrada = this.catalogue.filter(item => item.idTienda == "won")[0].categorias
+        } catch (error) {
+          this.categoriaFiltrada = []
+        }
       }
       this.$showSpinner(false);
   },
