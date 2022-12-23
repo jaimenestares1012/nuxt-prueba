@@ -43,7 +43,7 @@
             </v-card-text>
             <table style=" width: 95%; margin:auto; text-align: center">
                 <tr style="background: #488FEF; color: white">
-                    <th scope="col"># unidades</th>
+                    <th scope="col" style="padding:4px">unidades</th>
                     <th scope="col">Precio</th>
                     <th scope="col"> Producto </th>
                     <th scope="col">Subtotal</th>
@@ -51,11 +51,11 @@
                 
                 </tr>
                 <tr v-for="(value, key) in item.productosXFecha" :key="key"> 
-                    <td>{{ value.cantidad  }}</td>
-                    <td>S/ {{ value.precio }} </td>
+                    <td > {{ value.cantidad  }}</td>
+                    <td style="padding:6px">S/ {{ value.precio }} </td>
                     <td> {{ value.producto }} </td>
-                    <td>S/ {{ value.sumaParcial }} </td>
-                    <td>  <v-btn color="primary" dark @click="ira(value.url)" > Ir </v-btn> </td>
+                    <td style="padding:6px">S/ {{ value.sumaParcial }} </td>
+                    <td style="padding:6px">  <v-btn color="primary" dark @click="ira(value.url)" > Ir </v-btn> </td>
                 </tr>
             </table>
             <!-- <div class="container-button">
