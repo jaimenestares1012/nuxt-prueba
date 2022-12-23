@@ -24,14 +24,14 @@
           class="my-2"
         > Inicio
         </v-btn>
-        <v-btn
+        <!-- <v-btn
           color="white"
           text
           @click="redirectHistorico"
           rounded
           class="my-2"
         > Histórico
-        </v-btn>
+        </v-btn> -->
         <v-btn
           color="white"
           text
