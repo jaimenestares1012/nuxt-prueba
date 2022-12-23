@@ -2,10 +2,10 @@
    <div class="contenedor-crear">
     <div class="contenedor-textos-crear">
       <div class="contenedor-titulo-crear">
-          Crear canasta
+          {{ tittle }}
       </div>
        <form>
-            <div v-if="true">
+            <div v-if="existeBolsa">
               <v-text-field
                 v-model="nombreCanasta"
                 :error-messages="nombreCanastaErrors"
@@ -36,8 +36,7 @@
             </div>
            
             <!-- <hr style="border: 1px solid red; margin:20px -20px"> -->
-
-            <div class="productos-adicionar"  v-if="condicion">
+            <div class="productos-adicionar"  v-if="!existeBolsa">
               <v-select
                   v-model="categoriaSelect"
                   :items="categoriaFiltrada"
@@ -53,6 +52,18 @@
                   @change="$v.categoriaSelect.$touch()"
                   @blur="$v.categoriaSelect.$touch()"
               ></v-select>
+              <v-text-field
+                v-model="cantidad"
+                :error-messages="cantidadErrors"
+                label="Ingrese la cantidad deseada de este producto"
+                outlined      
+                dense
+                color="#488FEF"
+                background-color="#E6E6E6"
+                required
+                @input="$v.cantidad.$touch()"
+                @blur="$v.cantidad.$touch()"
+              ></v-text-field>
               <v-text-field
                 v-model="producto"
                 :error-messages="productoErrors"
@@ -101,66 +112,23 @@
                               color="orange"
                               
                               outlined
-                              @click="redirect(item.url)"
+                              @click="redirect(item)"
                           >
-                              Elegir
+                              Añadir
                           </v-btn>
                         </div>
                     </v-card>
                 </div>
               </div>
-              
             </div>
-            <div>
-              <v-btn
-                color="primary"
-                dark
-                @click="addProducto"
-              >
-                  Añadir Productos (+)
-              </v-btn>
-            </div>
-             <!-- <v-text-field
-                v-model="name"
-                :error-messages="nameErrors"
-                :counter="10"
-                label="Nombre"
-                required
-                @input="$v.name.$touch()"
-                @blur="$v.name.$touch()"
-            ></v-text-field> -->
-            <!-- <v-select
-                v-model="select"
-                :items="listWon"
-                :error-messages="selectErrors"
-                item-text="nombre"
-                item-value="id"
-                label="Categoria"
-                required
-                @change="$v.select.$touch()"
-                @blur="$v.select.$touch()"
-            ></v-select> -->
-            <v-checkbox
-                v-model="checkbox"
-                :error-messages="checkboxErrors"
-                label="Do you agree?"
-                required
-                @change="$v.checkbox.$touch()"
-                @blur="$v.checkbox.$touch()"
-            ></v-checkbox>
         </form>
-      <!-- <div class="contenedor-subtitulo-detalles">
-          Nombre Lista: <b> {{title}} </b> <br>
-           Tienda filtrada:  <b>{{tiendaSelect}}  </b> <br>
-           Lista creado por : <b> {{creador}}  </b>  
-      </div> -->
-      <div class="contenedor-detalles-button">
+      <div class="contenedor-detalles-button" v-if="existeBolsa">
           <v-btn
               color="primary"
               dark
              @click="submit"
           >
-              Crear
+              registrar
           </v-btn>
       </div>
     </div>
@@ -170,12 +138,16 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, maxLength, email } from 'vuelidate/lib/validators'
+import { required, maxLength, email, numeric } from 'vuelidate/lib/validators'
 import { mapGetters } from 'vuex';
 export default {
    mixins: [validationMixin],
   data(){
     return{
+        usuario: "usuarioGenerico",
+        idCanasta : "",
+        cantidad : null,
+        idUsuario: 1341111123,
         name: '',
         nombreCanasta: '',
         condicion: false,
@@ -183,13 +155,6 @@ export default {
         producto: null,
         categoriaSelect: null,
         categoriaFiltrada: [],
-        items: [
-            'Item 1',
-            'Item 2',
-            'Item 3',
-            'Item 4',
-        ],
-        checkbox: false,
         arrayProductos: []
     }
   },
@@ -197,6 +162,7 @@ export default {
       name: { required, maxLength: maxLength(10) },
       nombreCanasta: { required, email },
       tiendaSelect: { required },
+      cantidad: { required, numeric },
       categoriaSelect: { required },
       producto: {required}, 
       checkbox: {
@@ -206,7 +172,7 @@ export default {
       },
     },
   computed:{
-    ...mapGetters('producto', [ 'catalogue', 'productos']),
+    ...mapGetters('producto', [ 'catalogue', 'productos', 'bolsa']),
       checkboxErrors () {
         const errors = []
         if (!this.$v.checkbox.$dirty) return errors
@@ -239,16 +205,29 @@ export default {
         !this.$v.nombreCanasta.required && errors.push('Este campo es requerido')
         return errors
       },
+      tittle(){
+        return this.existeBolsa ?  "Crea tu canasta" : "Ya haz creado tu canasta, ahora añade algunos productos"
+      },
       productoErrors(){
         const errors = []
         if (!this.$v.producto.$dirty) return errors
         !this.$v.producto.required && errors.push('Este campo es requerido')
         return errors
       },
+      cantidadErrors(){
+        const errors = []
+        if (!this.$v.cantidad.$dirty) return errors
+        !this.$v.cantidad.required && errors.push('Este campo es requerido')
+        !this.$v.cantidad.numeric && errors.push('Este campo debe ser númerico')
+        return errors
+      },
       listTiendas (){
         const array = this.catalogue.filter(item => item.idTienda == 'tiendas' )
         return array[0] ?  array[0].categorias : []
       },
+      existeBolsa(){
+        return this.bolsa.title ? false : true
+      }
       
    },
   props: {
@@ -256,6 +235,8 @@ export default {
   components:{
   },
   async mounted(){
+      const jwt = this.$route.query.key;
+      this.idCanasta =  jwt
       this.$store.commit('producto/SET_CLEAR');
       this.$showSpinner(true);
       let paylodad = {
@@ -264,32 +245,77 @@ export default {
           "tipo": "1"
         }
       await this.$store.dispatch('producto/getCatalogos',paylodad);
+      await this.$store.dispatch('producto/datosCanasta', this.idCanasta);
+      console.log("bolsa", this.bolsa);
+      if (this.bolsa.title) {
+        this.tiendaSelect = this.bolsa.tiendaSelect
+        this.categoriaFiltrada = []
+        this.categoriaFiltrada = this.catalogue.filter(item => item.idTienda == this.tiendaSelect )[0].categorias
+      }
       this.$showSpinner(false);
   },
   methods:{
     submirForm(){
     //    this.$router.push('/mediciones');
     },
-    submit () {
+    async submit () {
         this.$v.$touch()
-      },
-    addProducto(){
-        this.condicion =  true
+        if (this.nombreCanasta && this.tiendaSelect ) {
+          this.$showSpinner(true);
+          console.log("solo así se puede avanzaer");
+          const body = {
+              "title": this.nombreCanasta,
+              "tiendaSelect": this.tiendaSelect,
+              "creador": this.usuario,
+              "idCreador":this.idUsuario,
+              "_id": this.idCanasta
+          }
+          console.log("body", body);
+          await this.$store.dispatch('producto/registrarBolsa', body);
+          await this.$store.dispatch('producto/datosCanasta', this.idCanasta);
+          this.$showSpinner(false);
+        }
       },
     handleTiendaPreference(){
         this.categoriaFiltrada = []
         this.categoriaFiltrada = this.catalogue.filter(item => item.idTienda == this.tiendaSelect )[0].categorias
-      },
+    },
     async buscarProducto(){
-      this.$showSpinner(true);
-      console.log("this.producto,", this.producto);
-      console.log("this.categoriaSelect", this.categoriaSelect);
-      let paylodad = {
-          "nombreProducto": this.producto,
-          "categoria": this.categoriaSelect,
+      this.$v.$touch()
+      if (this.categoriaSelect  && this.producto) {
+        this.$showSpinner(true);
+        console.log("this.producto,", this.producto);
+        console.log("this.categoriaSelect", this.categoriaSelect);
+        let paylodad = {
+            "nombreProducto": this.producto,
+            "categoria": this.categoriaSelect,
+            "numeroDias": "10",
+        }
+        await this.$store.dispatch('producto/getProducto',paylodad);
+        this.$showSpinner(false);
       }
-      await this.$store.dispatch('producto/getProducto',paylodad);
-      this.$showSpinner(false);
+    },
+    async redirect(value){
+      this.$showSpinner(true);
+        console.log("value", value);
+        let paylodad = {
+            "_id": this.idCanasta,
+            "cantidad": this.cantidad,
+            "typeCategory": value.categoria,
+            "tienda": value.tienda,
+            "prod": value.nombre,
+        }
+        console.log("<------------------------>");
+        console.log("paylodad", paylodad);
+        const response = await this.$store.dispatch('producto/insertProductos',paylodad);
+        if (response == "correct") {
+          console.log("COREEEESTTTTTTTTTTTTTTTP");
+          this.categoriaSelect =  null
+          this.producto= null
+          this.cantidad = null
+        }
+        console.log("RESPONSEEEEEEEEEEEEEEEEE", response);
+        this.$showSpinner(false);
     }
   }
 }

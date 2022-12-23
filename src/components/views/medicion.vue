@@ -129,11 +129,12 @@ export default {
         this.$showSpinner(false);
       },
       redirectCrear(){
-        this.$router.push('/mediciones/crear');
+        const prueba = 221323
+        this.$router.push(`/mediciones/crear/?key=${prueba}`);
       }
     },
     computed:{
-      ...mapGetters('producto', [ 'catalogue']),
+      ...mapGetters('producto', [ 'catalogue' ]),
 
       dataAdministrador(){
         const array = this.catalogue.filter(item => item.creador == 'administrador' )
