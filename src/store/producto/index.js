@@ -1,6 +1,6 @@
 
 import { apigetProducto, apigetPoderAquisitivo } from '@/api/productos';
-import { apigetCatalogos, apiDatosCanasta, apiregistrarBolsa, apiinsertProductos } from '@/api/catalogos';
+import { apigetCatalogos, apiDatosCanasta, apiregistrarBolsa, apiinsertProductos, apiresumenes } from '@/api/catalogos';
 export const state = () => ({
   isLoading: false,
   isError: false,
@@ -11,6 +11,9 @@ export const state = () => ({
   poder: [],
   catalogue: [],
   bolsa : {},
+  base64Producto: '',
+  base64Dolar: '',
+
 });
 
 export const mutations = {
@@ -43,6 +46,11 @@ export const mutations = {
   },
   RESET_PRODUCTOS(state){
     state.productos = []
+  },
+  SET_BASE64(state, value){
+    const adi = "data:image/png;base64, "
+    state.base64Producto =adi + value.data
+    state.base64Dolar =adi + value.dataDolar
   }
 };
 
@@ -86,12 +94,6 @@ export const actions = {
     async registrarBolsa({ commit }, payload) {
       console.log("registrarBolsa", payload);
       const responseApiregistrarBolsa = await apiregistrarBolsa(payload);
-      console.log("<.............................>");
-      console.log("<.............................>");
-      console.log("<.............................>");
-      console.log("<.............................>");
-      console.log("<.............................>");
-      console.log("responseApiregistrarBolsa", responseApiregistrarBolsa);
       if (responseApiregistrarBolsa.codRes=="00") {
         // commit('SET_PODER', responseApiregistrarBolsa.data);
         // commit('SET_PODER_ADIC', responseApiregistrarBolsa);
@@ -114,6 +116,19 @@ export const actions = {
         commit('SET_IS_ERROR', false);
       }
     },
+
+    async resumenes({ commit }, payload) {
+      const data = {
+        "data": payload
+      }
+      const responseApiresumenes = await apiresumenes(data);
+      console.log("resumenes", responseApiresumenes);
+      if (responseApiresumenes.codRes=="00") {
+        commit('SET_BASE64',responseApiresumenes );
+      }else{
+        commit('SET_IS_ERROR', false);
+      }
+    },
 };
 
 
@@ -125,5 +140,7 @@ export const getters = {
   title: (state) => state.title,
   creador: (state) => state.creador,
   catalogue: (state) => state.catalogue ? state.catalogue : [],
-  bolsa: (state) => state.bolsa ? state.bolsa : {}
+  bolsa: (state) => state.bolsa ? state.bolsa : {},
+  base64Producto: (state) => state.base64Producto ? state.base64Producto : '', 
+  base64Dolar: (state) => state.base64Dolar ? state.base64Dolar : ''
 };

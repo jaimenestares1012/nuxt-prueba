@@ -62,4 +62,21 @@ async function apiinsertProductos(data) {
   }
 }
 
-export { apigetCatalogos, apiDatosCanasta , apiregistrarBolsa, apiinsertProductos};
+
+async function apiresumenes(data) {
+  try {
+    const response = await axios({
+      url: `http://18.234.81.160:8080/resumen/1`,
+      method: "POST",
+      data
+    });
+    return response.data
+  } catch (error) {
+    return {
+      codRes: "99",
+      message: "Error",
+    };
+  }
+}
+
+export { apigetCatalogos, apiDatosCanasta , apiregistrarBolsa, apiinsertProductos, apiresumenes};

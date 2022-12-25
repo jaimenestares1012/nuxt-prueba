@@ -17,6 +17,14 @@
           >
               Regresar
           </v-btn>
+          <v-btn
+              color="primary"
+              dark
+              style="margin-left:10px"
+              @click="resumen()"
+          >
+              Resumen
+          </v-btn>
       </div>
     </div>
     
@@ -89,6 +97,12 @@ export default {
     },
     ira(url){
       window.open(url, '_blank')
+    },
+    async resumen(){
+      this.$showSpinner(true);
+      await this.$store.dispatch('producto/resumenes', this.poder);
+      this.$showSpinner(false);
+      this.$router.push('/mediciones/resumen');
     }
   }
 }
@@ -106,8 +120,10 @@ export default {
     flex-wrap: wrap;
 }
 .contenedor-detalles-button{
+  display: flex;
   margin: 0px auto;
-  width: 160px;
+  width: 200px;
+
 }
 .contenedor-titulo-detalles{
   color: #00498B;
@@ -127,8 +143,8 @@ export default {
   margin: 10px;
   padding-bottom: 20px;
 }
-.contenedor-detalles-button{
+/* .contenedor-detalles-button{
   margin: 0px auto;
   width: 100px;
-}
+} */
 </style>
