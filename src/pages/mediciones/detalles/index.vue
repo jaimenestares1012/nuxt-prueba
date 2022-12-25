@@ -27,7 +27,7 @@
           </v-btn>
       </div>
     </div>
-    
+  
     <div class="contenedor-card-detalles">
      <v-card
           v-for="(item, key) in poder"

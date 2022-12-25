@@ -7,6 +7,42 @@
         <img :src="base64Producto" alt="">
         
       </div>
+        <br>
+        <br>
+        <h1 style="text-align: center">Detalles</h1>
+        <div class="contenedor-card-detalles">
+
+        <v-card
+          v-for="(item, key) in poder"
+          :key="key"
+          class="card-nativo-detalles" 
+        >   
+            <div class="titulo-medicion">
+               {{item.fecha}}
+            </div>
+            <v-card-text class="text--primary ">
+            <div style="font-size:17px">Precio total: <b> S/{{item.montoTotal}} </b> </div>
+            <div>Número de productos : <b> {{item.numeroProductos}}  </b></div>
+            </v-card-text>
+            <table style=" width: 95%; margin:auto; text-align: center">
+                <tr style="background: #488FEF; color: white">
+                    <th scope="col" style="padding:4px">unidades</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col"> Producto </th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col"> Enlace </th>
+                
+                </tr>
+                <tr v-for="(value, key) in item.productosXFecha" :key="key"> 
+                    <td > {{ value.cantidad  }}</td>
+                    <td style="padding:6px">S/ {{ value.precio }} </td>
+                    <td> {{ value.producto }} </td>
+                    <td style="padding:6px">S/ {{ value.sumaParcial }} </td>
+                    <td style="padding:6px">  <v-btn color="primary" dark @click="ira(value.url)" > Ir </v-btn> </td>
+                </tr>
+            </table>
+        </v-card>
+    </div>
     </div>
   </div>
 </template>
@@ -21,7 +57,7 @@ export default {
   },
   
   computed:{
-   ...mapGetters('producto', [ 'base64Dolar', 'base64Producto']),
+   ...mapGetters('producto', [ 'base64Dolar', 'base64Producto', 'poder']),
    },
   props: {
   },
@@ -29,6 +65,9 @@ export default {
   },
  
   methods:{
+    ira(url){
+      window.open(url, '_blank')
+    },
   }
 }
 </script>
