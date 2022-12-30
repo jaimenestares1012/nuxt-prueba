@@ -23,24 +23,17 @@
               style="margin-left:10px"
               @click="resumen()"
           >
-              Resumen
+              Gráficos
           </v-btn>
       </div>
     </div>
   
     <div class="contenedor-card-detalles">
-     <v-card
+        <v-card
           v-for="(item, key) in poder"
           :key="key"
           class="card-nativo-detalles" 
         > 
-            <!-- <v-img
-            class="white--text align-end"
-            height="200px"
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-            >
-           
-            </v-img> -->
             
             <div class="titulo-medicion">
                {{item.fecha}}
@@ -66,16 +59,8 @@
                     <td style="padding:6px">  <v-btn color="primary" dark @click="ira(value.url)" > Ir </v-btn> </td>
                 </tr>
             </table>
-            <!-- <div class="container-button">
-              <v-btn
-                  color="primary"
-                  dark
-                  @click="redirect(item)"
-              >
-                  Ver evolución
-              </v-btn>
-            </div> -->
         </v-card>
+     
      
     </div>
   </div>

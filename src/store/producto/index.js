@@ -1,6 +1,6 @@
 
 import { apigetProducto, apigetPoderAquisitivo } from '@/api/productos';
-import { apigetCatalogos, apiDatosCanasta, apiregistrarBolsa, apiinsertProductos, apiresumenes } from '@/api/catalogos';
+import { apigetCatalogos, apiDatosCanasta, apiregistrarBolsa, apiinsertProductos, apiresumenes, apigetReporte } from '@/api/catalogos';
 export const state = () => ({
   isLoading: false,
   isError: false,
@@ -13,7 +13,8 @@ export const state = () => ({
   bolsa : {},
   base64Producto: '',
   base64Dolar: '',
-
+  bodyPoder:{},
+  poderDetalle: []
 });
 
 export const mutations = {
@@ -51,6 +52,13 @@ export const mutations = {
     const adi = "data:image/png;base64, "
     state.base64Producto =adi + value.data
     state.base64Dolar =adi + value.dataDolar
+  },
+  SET_DATA_REPORTE(state, value){
+    state.bodyPoder = value
+  },
+  SET_REPORTE(state, value){
+    console.log("SET_REPORTE", value);
+    state.poderDetalle = value
   }
 };
 
@@ -81,6 +89,7 @@ export const actions = {
        }
     },
     async getPoderAquisitivo({ commit }, payload) {
+      commit('SET_DATA_REPORTE', payload)
       console.log("getPoderAquisitivo", payload);
       const responseApigetPoderAquisitivo = await apigetPoderAquisitivo(payload);
       if (responseApigetPoderAquisitivo.codRes=="00") {
@@ -129,6 +138,16 @@ export const actions = {
         commit('SET_IS_ERROR', false);
       }
     },
+    async getReporte({ commit }, payload) {
+      const responseApigetReporte = await apigetReporte(payload);
+      console.log("responseApigetReporte", responseApigetReporte);
+      if (responseApigetReporte.codRes=="00") {
+        console.log("poderDetalle", responseApigetReporte);
+        commit('SET_REPORTE',responseApigetReporte.data );
+      }else{
+        commit('SET_IS_ERROR', false);
+      }
+    },
 };
 
 
@@ -142,5 +161,7 @@ export const getters = {
   catalogue: (state) => state.catalogue ? state.catalogue : [],
   bolsa: (state) => state.bolsa ? state.bolsa : {},
   base64Producto: (state) => state.base64Producto ? state.base64Producto : '', 
-  base64Dolar: (state) => state.base64Dolar ? state.base64Dolar : ''
+  base64Dolar: (state) => state.base64Dolar ? state.base64Dolar : '',
+  bodyPoder: (state) => state.bodyPoder ? state.bodyPoder : {},
+  poderDetalle: (state) => state.poderDetalle ? state.poderDetalle : [],
 };
